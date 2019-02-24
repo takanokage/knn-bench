@@ -1,0 +1,3 @@
+[submodule "kNN-CUDA"]
+	path = kNN-CUDA
+	url = https://github.com/takanokage/kNN-CUDA
