@@ -1,3 +1,6 @@
 [submodule "kNN-CUDA"]
 	path = kNN-CUDA
 	url = https://github.com/takanokage/kNN-CUDA
+[submodule "flann"]
+	path = flann
+	url = https://github.com/mariusmuja/flann
