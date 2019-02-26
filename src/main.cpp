@@ -16,6 +16,8 @@ using namespace std;
 // ----------------------------------------------------------------------------
 int main(int argc, char **argv)
 {
+    cout << endl;
+
     // default arguments
     int trainSize = 128;
     int testSize  = 8;

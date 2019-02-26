@@ -9,9 +9,12 @@ project(knn-bench CXX CUDA)
 
 add_subdirectory(kNN-CUDA "${CMAKE_BINARY_DIR}/lib")
 
+# collect the source code
+file(GLOB_RECURSE ALL_SOURCE_FILES "src/*.cpp")
+
 # create executable
-add_executable(${PROJECT_NAME} main.cpp init.cpp ref.cpp test.cpp)
-include_directories(kNN-CUDA)
+add_executable(${PROJECT_NAME} ${ALL_SOURCE_FILES})
+include_directories(src kNN-CUDA)
 target_link_libraries(${PROJECT_NAME} PRIVATE kNN-CUDA cublas)
 set_target_properties(${PROJECT_NAME} PROPERTIES
                       CUDA_SEPARABLE_COMPILATION ON
