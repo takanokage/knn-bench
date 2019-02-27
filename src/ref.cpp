@@ -7,6 +7,7 @@
 #include <cstring>
 
 #include <algorithm>
+#include <iomanip>
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -86,14 +87,17 @@ int CountMatches(
 {
     int nb_correct = 0;
 
-    int size = (int)gt_distances.size();
+    int size = (int)gt_distances.size() / K;
 
     for (int i = 0; i < size; i++)
     {
-        float error = fabs(gt_distances[i] - test_distances[i]);
+        for (int k = 0; k < K; k++)
+        {
+            float error = fabs(gt_distances[i * K + k] - test_distances[i * K + k]);
 
-        if (error <= PRECISION)
-            nb_correct++;
+            if (error <= PRECISION)
+                nb_correct++;
+        }
     }
 
     return nb_correct;
@@ -108,14 +112,25 @@ int CountMatches(
 {
     int nb_correct = 0;
 
-    int size = (int)gt_indices.size();
+    int size = (int)gt_indices.size() / K;
 
     for (int i = 0; i < size; i++)
     {
-        int error = gt_indices[i] - test_indices[i];
+        vector<int> lgt_indices(K);
+        memcpy(&lgt_indices[0], &gt_indices[i * K], K * sizeof(float));
+        sort(lgt_indices.begin(), lgt_indices.end());
 
-        if (error == 0)
-            nb_correct++;
+        vector<int> ltest_indices(K);
+        memcpy(&ltest_indices[0], &test_indices[i * K], K * sizeof(float));
+        sort(ltest_indices.begin(), ltest_indices.end());
+
+        vector<int> intersection(2 * K);
+        vector<int>::iterator it;
+        it = set_intersection(lgt_indices.begin(), lgt_indices.end(),
+                              ltest_indices.begin(), ltest_indices.end(),
+                              intersection.begin());
+        intersection.resize(it - intersection.begin());
+        nb_correct += intersection.size();
     }
 
     return nb_correct;

@@ -31,35 +31,27 @@ double test_flann(
     vector<float> test_distances(testSize * K);
     vector<int> test_indices(testSize * K);
 
-	int nn = K;
-	struct FLANNParameters p;
-	float speedup;
-	flann_index_t index_id;
-
-    int rows = trainSize;
-    int cols = 1;
-    int tcount = testSize;
-
 	float* dataset = (float*)&trainPoints[0];
 	float* testset = (float*)&testPoints[0];
 
 	int* result = (int*)&test_indices[0];
 	float* dists = (float*)&test_distances[0];
 
-    p = DEFAULT_FLANN_PARAMETERS;
-    // p.algorithm = FLANN_INDEX_KDTREE;
-    // p.trees = 8;
-    // p.log_level = FLANN_LOG_INFO;
-	// p.checks = 64;
+	struct FLANNParameters p = DEFAULT_FLANN_PARAMETERS;
+    p.algorithm = FLANN_INDEX_KDTREE;
+    p.trees = 16;
+    p.log_level = FLANN_LOG_INFO;
+	p.checks = 64;
 
-    index_id = flann_build_index(dataset, rows, cols, &speedup, &p);
+	float speedup;
+	flann_index_t index_id = flann_build_index(dataset, trainSize, DIM, &speedup, &p);
 
     // Start timer
     struct timeval tic;
     gettimeofday(&tic, NULL);
 
     for (int i = 0; i < nb_iterations; i++)
-        flann_find_nearest_neighbors_index(index_id, testset, tcount, result, dists, nn, &p);
+        flann_find_nearest_neighbors_index(index_id, testset, testSize, result, dists, K, &p);
 
     // Stop timer
     struct timeval toc;
