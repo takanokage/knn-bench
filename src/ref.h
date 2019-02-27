@@ -5,6 +5,11 @@
 #include <vector>
 
 float L2Norm(
+    const float* const trainPoint,
+    const float* const testPoint,
+    const int& DIM);
+
+float L2Norm(
     const std::vector<float>& trainPoints,
     const std::vector<float>& testPoints,
     const int& DIM,

@@ -14,6 +14,23 @@ using namespace std;
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 float L2Norm(
+    const float* const trainPoint,
+    const float* const testPoint,
+    const int& DIM)
+{
+    float sum = 0.0f;
+    for (int d=0; d<DIM; ++d)
+    {
+        float diff = trainPoint[d] - testPoint[d];
+        sum += diff * diff;
+    }
+
+    return sqrtf(sum);
+}
+
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+float L2Norm(
     const vector<float>& trainPoints,
     const vector<float>& testPoints,
     const int& DIM,
@@ -23,14 +40,7 @@ float L2Norm(
     int trainSize = (int)trainPoints.size() / DIM;
     int testSize = (int)testPoints.size() / DIM;
 
-    float sum = 0.f;
-    for (int d=0; d<DIM; ++d)
-    {
-        const float diff = trainPoints[trnId * DIM + d] - testPoints[tstId * DIM + d];
-        sum += diff * diff;
-    }
-
-    return sqrtf(sum);
+    return L2Norm(&trainPoints[trnId * DIM], &testPoints[tstId * DIM], DIM);
 }
 
 // ----------------------------------------------------------------------------
