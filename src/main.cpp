@@ -7,10 +7,9 @@ using namespace std;
 #include "init.h"
 #include "main.h"
 #include "ref.h"
-#include "test.h"
 #include "types.h"
 
-#include "knncuda.h"
+#include "test_kNN_CUDA.h"
 
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
@@ -78,9 +77,9 @@ int main(int argc, char **argv)
     cout << endl;
 
     // Test and display results
-    Test(trainPointsTr, testPointsTr, DIM, K, gt_distancesTr, gt_indicesTr, &knn_cuda_global,  "knn_cuda_global",  100);
-    Test(trainPointsTr, testPointsTr, DIM, K, gt_distancesTr, gt_indicesTr, &knn_cuda_texture, "knn_cuda_texture", 100);
-    Test(trainPointsTr, testPointsTr, DIM, K, gt_distancesTr, gt_indicesTr, &knn_cublas,       "knn_cublas",       100);
+    test_kNN_CUDA(trainPointsTr, testPointsTr, DIM, K, gt_distancesTr, gt_indicesTr, &knn_cuda_global,  "knn_cuda_global",  100);
+    test_kNN_CUDA(trainPointsTr, testPointsTr, DIM, K, gt_distancesTr, gt_indicesTr, &knn_cuda_texture, "knn_cuda_texture", 100);
+    test_kNN_CUDA(trainPointsTr, testPointsTr, DIM, K, gt_distancesTr, gt_indicesTr, &knn_cublas,       "knn_cublas",       100);
 
     cout << endl;
 

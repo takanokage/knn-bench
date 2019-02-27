@@ -1,9 +1,11 @@
 
 #pragma once
 
+#include "knncuda.h"
+
 #include <vector>
 
-bool Test(
+bool test_kNN_CUDA(
     const std::vector<float>& trainPoints,
     const std::vector<float>& testPoints,
     const int& DIM,

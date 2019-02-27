@@ -1,5 +1,5 @@
 
-#include "test.h"
+#include "test_kNN_CUDA.h"
 
 #include <cmath>
 #include <sys/time.h>
@@ -10,7 +10,7 @@ using namespace std;
 
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
-bool Test(
+bool test_kNN_CUDA(
     const vector<float>& trainPoints,
     const vector<float>& testPoints,
     const int& DIM,
