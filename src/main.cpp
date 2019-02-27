@@ -7,6 +7,7 @@ using namespace std;
 #include "init.h"
 #include "main.h"
 #include "ref.h"
+#include "report.h"
 #include "types.h"
 
 #include "test_kNN_CUDA.h"
@@ -69,20 +70,14 @@ int main(int argc, char **argv)
     vector<float> gt_distancesTr = Transpose(gt_distances, testSize, K);
     vector<int> gt_indicesTr = Transpose(gt_indices, testSize, K);
 
-    // Display header
-    int width = 16;
-    cout << setw(width) << "Implementation";
-    cout << setw(width) << "Duration (s)";
-    cout << setw(width) << "Nr. iterations";
-    cout << setw(width) << "Validation";
-    cout << endl;
+    DisplayHeader();
 
     // Test and display results
     test_kNN_CUDA(trainPointsTr, testPointsTr, DIM, K, gt_distancesTr, gt_indicesTr, &knn_cuda_global,  "knn_cuda_global",  100);
     test_kNN_CUDA(trainPointsTr, testPointsTr, DIM, K, gt_distancesTr, gt_indicesTr, &knn_cuda_texture, "knn_cuda_texture", 100);
     test_kNN_CUDA(trainPointsTr, testPointsTr, DIM, K, gt_distancesTr, gt_indicesTr, &knn_cublas,       "knn_cublas",       100);
 
-    test_flann(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, "flann", 100);
+    test_flann(trainPointsTr, testPointsTr, DIM, K, gt_distancesTr, gt_indicesTr, "flann", 100);
 
     cout << endl;
 

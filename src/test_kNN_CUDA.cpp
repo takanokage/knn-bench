@@ -1,5 +1,6 @@
 
 #include "test_kNN_CUDA.h"
+#include "report.h"
 
 #include <cmath>
 #include <sys/time.h>
@@ -24,20 +25,16 @@ bool test_kNN_CUDA(
     int trainSize = (int)trainPoints.size() / DIM;
     int testSize = (int)testPoints.size() / DIM;
 
-    // Parameters
-    const float precision    = 0.001f; // distance error max
-    const float min_accuracy = 0.999f; // percentage of correct values required
-
     // Allocate memory for computed K-NN neighbors
-    vector<float> test_distances (testSize * K);
-    vector<int>   test_indices(testSize * K);
+    vector<float> test_distances(testSize * K);
+    vector<int> test_indices(testSize * K);
 
     // Start timer
     struct timeval tic;
     gettimeofday(&tic, NULL);
 
     // Compute K-NN several times
-    for (int i=0; i<nb_iterations; ++i)
+    for (int i = 0; i < nb_iterations; i++)
     {
         bool passed = knn(
             &trainPoints[0],
@@ -59,12 +56,16 @@ bool test_kNN_CUDA(
 
     // Elapsed time in ms
     double elapsed_time = toc.tv_sec - tic.tv_sec;
-    elapsed_time += (toc.tv_usec - tic.tv_usec) / 1000000.;
+    elapsed_time += (toc.tv_usec - tic.tv_usec) / 1e6;
+
+    // Parameters
+    const float precision    = 0.001f; // distance error max
+    const float min_accuracy = 0.999f; // percentage of correct values required
 
     // Verify both precisions and indexes of the K-NN values
     int nb_correct_precisions = 0;
     int nb_correct_indexes    = 0;
-    for (int i=0; i<testSize*K; ++i)
+    for (int i = 0; i < testSize * K; i++)
     {
         if (fabs(test_distances[i] - gt_distances[i]) <= precision)
             nb_correct_precisions++;
@@ -77,16 +78,11 @@ bool test_kNN_CUDA(
     float precision_accuracy = nb_correct_precisions / ((float) testSize * K);
     float index_accuracy     = nb_correct_indexes    / ((float) testSize * K);
 
-    // Display report
-    int width = 16;
-    cout << setw(width) << name;
-    cout << setw(width) << right << setprecision(5) << elapsed_time / nb_iterations;
-    cout << setw(width) << right << nb_iterations;
-    if (precision_accuracy >= min_accuracy && index_accuracy >= min_accuracy )
-        cout << setw(width) << "PASSED";
-    else
-        cout << setw(width) << "FAILED";
-    cout << endl;
+    DisplayRow(name,
+        elapsed_time,
+        nb_iterations,
+        precision_accuracy,
+        index_accuracy);
 
     return true;
 }

@@ -31,14 +31,13 @@ Directories(flann/src/cpp FLANN_INCLUDE_DIRS)
 file(GLOB_RECURSE ALL_SOURCE_FILES "src/*.cpp")
 list(APPEND ALL_SOURCE_FILES flann/src/cpp/flann/flann.cpp)
 
-message(STATUS "******")
-message(STATUS "ALL_SOURCE_FILES : ${ALL_SOURCE_FILES}")
-message(STATUS "******")
+# message(STATUS "******")
+# message(STATUS "ALL_SOURCE_FILES : ${ALL_SOURCE_FILES}")
+# message(STATUS "******")
 
 # create executable
 add_executable(${PROJECT_NAME}
     ${ALL_SOURCE_FILES})
-    # flann/src/cpp/flann/flann.cpp)
 
 include_directories(src
     ${KNN_CUDA_INCLUDE_DIRS}
