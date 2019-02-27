@@ -30,21 +30,6 @@ float L2Norm(
 
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
-float L2Norm(
-    const vector<float>& trainPoints,
-    const vector<float>& testPoints,
-    const int& DIM,
-    const int& trnId,
-    const int& tstId)
-{
-    int trainSize = (int)trainPoints.size() / DIM;
-    int testSize = (int)testPoints.size() / DIM;
-
-    return L2Norm(&trainPoints[trnId * DIM], &testPoints[tstId * DIM], DIM);
-}
-
-// ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
 void Ref_kNN(
     const vector<float>& trainPoints,
     const vector<float>& testPoints,
@@ -66,7 +51,9 @@ void Ref_kNN(
         // Compute all distances / indexes
         for (int trnId = 0; trnId < trainSize; trnId++)
         {
-            float distance = L2Norm(trainPoints, testPoints, DIM, trnId, tstId);
+            float distance = L2Norm(&trainPoints[trnId * DIM],
+                                    &testPoints[tstId * DIM],
+                                    DIM);
 
             for (int i = 0; i < distances.size(); i++)
             {
