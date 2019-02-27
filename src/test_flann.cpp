@@ -6,13 +6,66 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-using namespace flann;
+float* read_points(const char* filename, int rows, int cols)
+{
+	float* data;
+	float *p;
+	FILE* fin;
+	int i,j;
+
+    fin = fopen(filename,"r");
+    if (!fin) {
+        printf("Cannot open input file.\n");
+        exit(1);
+    }
+
+    data = (float*) malloc(rows*cols*sizeof(float));
+    if (!data) {
+        printf("Cannot allocate memory.\n");
+        exit(1);
+    }
+    p = data;
+
+    for (i=0;i<rows;++i) {
+        for (j=0;j<cols;++j) {
+            fscanf(fin,"%g ",p);
+            p++;
+        }
+    }
+
+    fclose(fin);
+
+    return data;
+}
+
+void write_results(const char* filename, int *data, int rows, int cols)
+{
+	FILE* fout;
+	int* p;
+	int i,j;
+
+    fout = fopen(filename,"w");
+    if (!fout) {
+        printf("Cannot open output file.\n");
+        exit(1);
+    }
+
+    p = data;
+    for (i=0;i<rows;++i) {
+        for (j=0;j<cols;++j) {
+            fprintf(fout,"%d ",*p);
+            p++;
+        }
+        fprintf(fout,"\n");
+    }
+    fclose(fout);
+}
 
 void test_flann()
 {
 	float* dataset;
 	float* testset;
-	int nn;
+	int nn = 3;
 	int* result;
 	float* dists;
 	struct FLANNParameters p;
@@ -28,12 +81,11 @@ void test_flann()
      * http://people.cs.ubc.ca/~mariusm/uploads/FLANN/datasets/dataset.dat
      * http://people.cs.ubc.ca/~mariusm/uploads/FLANN/datasets/testset.dat
      */
-    // printf("Reading input data file.\n");
-    // dataset = read_points("dataset.dat", rows, cols);
-    // printf("Reading test data file.\n");
-    // testset = read_points("testset.dat", tcount, cols);
+    printf("Reading input data file.\n");
+    dataset = read_points("dataset.dat", rows, cols);
+    printf("Reading test data file.\n");
+    testset = read_points("testset.dat", tcount, cols);
 
-    nn = 3;
     result = (int*) malloc(tcount*nn*sizeof(int));
     dists = (float*) malloc(tcount*nn*sizeof(float));
 
@@ -47,7 +99,7 @@ void test_flann()
     index_id = flann_build_index(dataset, rows, cols, &speedup, &p);
     flann_find_nearest_neighbors_index(index_id, testset, tcount, result, dists, nn, &p);
 
-    // write_results("results.dat",result, tcount, nn);
+    write_results("results.dat",result, tcount, nn);
 
     flann_free_index(index_id, &p);
     free(dataset);
