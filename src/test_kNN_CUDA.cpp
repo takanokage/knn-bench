@@ -60,25 +60,9 @@ bool test_kNN_CUDA(
     double elapsed_time = toc.tv_sec - tic.tv_sec;
     elapsed_time += (toc.tv_usec - tic.tv_usec) / 1e6;
 
-    // Parameters
-    const float precision    = 0.001f; // distance error max
-    const float min_accuracy = 0.999f; // percentage of correct values required
-
-    // Verify both precisions and indexes of the K-NN values
-    int nb_correct_distances = CountMatches(gt_distances, test_distances, K);
-    int nb_correct_indices   = CountMatches(gt_indices, test_indices, K);
-    // for (int i = 0; i < testSize * K; i++)
-    // {
-    //     if (fabs(test_distances[i] - gt_distances[i]) <= precision)
-    //         nb_correct_distances++;
-
-    //     if (test_indices[i] == gt_indices[i])
-    //         nb_correct_indices++;
-    // }
-
     // Compute accuracy
-    float precision_accuracy = nb_correct_distances / ((float) testSize * K);
-    float index_accuracy     = nb_correct_indices   / ((float) testSize * K);
+    float precision_accuracy = ComputeAccuracy(gt_distances, test_distances, K);
+    float index_accuracy     = ComputeAccuracy(gt_indices, test_indices, K);
 
     DisplayRow(name,
         elapsed_time,

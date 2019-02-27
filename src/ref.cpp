@@ -19,7 +19,7 @@ float L2Norm(
     const int& DIM)
 {
     float sum = 0.0f;
-    for (int d=0; d<DIM; ++d)
+    for (int d = 0; d < DIM; d++)
     {
         float diff = trainPoint[d] - testPoint[d];
         sum += diff * diff;
@@ -119,4 +119,32 @@ int CountMatches(
     }
 
     return nb_correct;
+}
+
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+float ComputeAccuracy(
+    const vector<float>& gt_distances,
+    const vector<float>& test_distances,
+    const int& K)
+{
+    int nb_correct = CountMatches(gt_distances, test_distances, K);
+
+    float accuracy = (float)nb_correct / gt_distances.size();
+
+    return accuracy;
+}
+
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+float ComputeAccuracy(
+    const vector<int>& gt_indices,
+    const vector<int>& test_indices,
+    const int& K)
+{
+    int nb_correct = CountMatches(gt_indices, test_indices, K);
+
+    float accuracy = (float)nb_correct / gt_indices.size();
+
+    return accuracy;
 }

@@ -29,3 +29,13 @@ int CountMatches(
     const std::vector<int>& gt_indices,
     const std::vector<int>& test_indices,
     const int& K);
+
+float ComputeAccuracy(
+    const std::vector<float>& gt_distances,
+    const std::vector<float>& test_distances,
+    const int& K);
+
+float ComputeAccuracy(
+    const std::vector<int>& gt_indices,
+    const std::vector<int>& test_indices,
+    const int& K);
