@@ -5,7 +5,7 @@
 
 #include <vector>
 
-bool test_kNN_CUDA(
+double test_kNN_CUDA(
     const std::vector<float>& trainPoints,
     const std::vector<float>& testPoints,
     const int& DIM,

@@ -13,7 +13,7 @@ using namespace std;
 
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
-bool test_kNN_CUDA(
+double test_kNN_CUDA(
     const vector<float>& trainPoints,
     const vector<float>& testPoints,
     const int& DIM,
@@ -70,5 +70,5 @@ bool test_kNN_CUDA(
         precision_accuracy,
         index_accuracy);
 
-    return true;
+    return elapsed_time;
 }

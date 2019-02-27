@@ -3,7 +3,7 @@
 
 #include <vector>
 
-void test_flann(
+double test_flann(
     const std::vector<float>& trainPoints,
     const std::vector<float>& testPoints,
     const int& DIM,

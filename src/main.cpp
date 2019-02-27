@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     vector<int>   gt_indices(testSize * K);
 
     // Initialize train & test points
-    srand(time(NULL));
+    // srand(time(NULL));
     init(&trainPoints[0], trainSize * DIM, 0.0f, 10.0f);
     init(&testPoints[0], testSize * DIM, 0.0f, 10.0f);
 

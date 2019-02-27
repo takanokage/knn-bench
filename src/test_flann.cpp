@@ -14,7 +14,7 @@ using namespace std;
 
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
-void test_flann(
+double test_flann(
     const std::vector<float>& trainPoints,
     const std::vector<float>& testPoints,
     const int& DIM,
@@ -71,29 +71,15 @@ void test_flann(
 
     flann_free_index(index_id, &p);
 
-    // Parameters
-    const float precision    = 0.001f; // distance error max
-    const float min_accuracy = 0.999f; // percentage of correct values required
-
-    // Verify both precisions and indexes of the K-NN values
-    int nb_correct_distances = 0;
-    int nb_correct_indices    = 0;
-    for (int i = 0; i < testSize * K; i++)
-    {
-        if (fabs(test_distances[i] - gt_distances[i]) <= precision)
-            nb_correct_distances++;
-
-        if (test_indices[i] == gt_indices[i])
-            nb_correct_indices++;
-    }
-
     // Compute accuracy
-    float precision_accuracy = nb_correct_distances / ((float) testSize * K);
-    float index_accuracy     = nb_correct_indices    / ((float) testSize * K);
+    float precision_accuracy = ComputeAccuracy(gt_distances, test_distances, K);
+    float index_accuracy     = ComputeAccuracy(gt_indices, test_indices, K);
 
     DisplayRow(name,
         elapsed_time,
         nb_iterations,
         precision_accuracy,
         index_accuracy);
+
+    return elapsed_time;
 }
