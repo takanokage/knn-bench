@@ -82,7 +82,7 @@ int main(int argc, char **argv)
     test_kNN_CUDA(trainPointsTr, testPointsTr, DIM, K, gt_distancesTr, gt_indicesTr, &knn_cuda_texture, "knn_cuda_texture", 100);
     test_kNN_CUDA(trainPointsTr, testPointsTr, DIM, K, gt_distancesTr, gt_indicesTr, &knn_cublas,       "knn_cublas",       100);
 
-    test_flann();
+    test_flann(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, "flann", 100);
 
     cout << endl;
 
