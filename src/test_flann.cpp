@@ -1,5 +1,7 @@
 
 #include "test_flann.h"
+
+#include "ref.h"
 #include "report.h"
 
 #include <flann/flann.h>
@@ -56,7 +58,7 @@ void test_flann(
     struct timeval tic;
     gettimeofday(&tic, NULL);
 
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < nb_iterations; i++)
         flann_find_nearest_neighbors_index(index_id, testset, tcount, result, dists, nn, &p);
 
     // Stop timer
@@ -74,20 +76,20 @@ void test_flann(
     const float min_accuracy = 0.999f; // percentage of correct values required
 
     // Verify both precisions and indexes of the K-NN values
-    int nb_correct_precisions = 0;
-    int nb_correct_indexes    = 0;
+    int nb_correct_distances = 0;
+    int nb_correct_indices    = 0;
     for (int i = 0; i < testSize * K; i++)
     {
         if (fabs(test_distances[i] - gt_distances[i]) <= precision)
-            nb_correct_precisions++;
+            nb_correct_distances++;
 
         if (test_indices[i] == gt_indices[i])
-            nb_correct_indexes++;
+            nb_correct_indices++;
     }
 
     // Compute accuracy
-    float precision_accuracy = nb_correct_precisions / ((float) testSize * K);
-    float index_accuracy     = nb_correct_indexes    / ((float) testSize * K);
+    float precision_accuracy = nb_correct_distances / ((float) testSize * K);
+    float index_accuracy     = nb_correct_indices    / ((float) testSize * K);
 
     DisplayRow(name,
         elapsed_time,

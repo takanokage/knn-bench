@@ -39,10 +39,10 @@ void Ref_kNN(
     vector<int>&  gt_indices)
 {
     int trainSize = (int)trainPoints.size() / DIM;
-    int testSize = (int)testPoints.size() / DIM;
+    int size = (int)testPoints.size() / DIM;
 
     // Process one testPoints point at the time
-    for (int tstId = 0; tstId < testSize; tstId++)
+    for (int tstId = 0; tstId < size; tstId++)
     {
         // local array to store all the distances / indexes for a given test point
         vector<float> distances(1, FLT_MAX);
@@ -75,4 +75,48 @@ void Ref_kNN(
             gt_indices[tstId * K + k] = indices[k];
         }
     }
+}
+
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+int CountMatches(
+    const vector<float>& gt_distances,
+    const vector<float>& test_distances,
+    const int& K)
+{
+    int nb_correct = 0;
+
+    int size = (int)gt_distances.size();
+
+    for (int i = 0; i < size; i++)
+    {
+        float error = fabs(gt_distances[i] - test_distances[i]);
+
+        if (error <= PRECISION)
+            nb_correct++;
+    }
+
+    return nb_correct;
+}
+
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+int CountMatches(
+    const vector<int>& gt_indices,
+    const vector<int>& test_indices,
+    const int& K)
+{
+    int nb_correct = 0;
+
+    int size = (int)gt_indices.size();
+
+    for (int i = 0; i < size; i++)
+    {
+        int error = gt_indices[i] - test_indices[i];
+
+        if (error == 0)
+            nb_correct++;
+    }
+
+    return nb_correct;
 }

@@ -7,6 +7,7 @@
 #define REPORT_WIDTH     16
 
 void DisplayHeader();
+
 void DisplayRow(
     const char* const name,
     const double& elapsed_time,
