@@ -9,6 +9,11 @@
 #include <iostream>
 using namespace std;
 
+#include <IndexFlat.h>
+#include <gpu/GpuIndexFlat.h>
+#include <gpu/GpuIndexIVFFlat.h>
+#include <gpu/StandardGpuResources.h>
+
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 double test_faiss(

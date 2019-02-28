@@ -38,13 +38,13 @@ Directories(pqt PQT_INCLUDE_DIRS)
 set(BUILD_TUTORIAL OFF CACHE BOOL "Build tutorials")
 set(BUILD_TEST OFF CACHE BOOL "Build tests")
 add_subdirectory(faiss "${CMAKE_BINARY_DIR}/faiss")
-# Directories(faiss FAISS_INCLUDE_DIRS)
+Directories(faiss FAISS_INCLUDE_DIRS)
 
 # collect the source code
 file(GLOB_RECURSE ALL_SOURCE_FILES "src/*.cpp")
 
 # message(STATUS "******")
-# message(STATUS "ALL_SOURCE_FILES : ${ALL_SOURCE_FILES}")
+# message(STATUS "FAISS_INCLUDE_DIRS : ${FAISS_INCLUDE_DIRS}")
 # message(STATUS "******")
 
 # create executable
@@ -54,6 +54,7 @@ add_executable(${PROJECT_NAME}
 include_directories(src
     ${KNN_CUDA_INCLUDE_DIRS}
     ${FLANN_INCLUDE_DIRS}
+    ${FAISS_INCLUDE_DIRS}
     ${PQT_INCLUDE_DIRS}
     /usr/local/cuda/include/
     /usr/local/cuda-10.0/samples/common/inc)
