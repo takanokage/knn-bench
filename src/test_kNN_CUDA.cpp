@@ -37,9 +37,7 @@ double test_kNN_CUDA(
 
     // Compute K-NN several times
     for (int i = 0; i < nb_iterations; i++)
-    {
-        bool passed = knn(
-            &trainPoints[0],
+        knn(&trainPoints[0],
             trainSize,
             &testPoints[0],
             testSize,
@@ -47,10 +45,6 @@ double test_kNN_CUDA(
             K,
             &test_distances[0],
             &test_indices[0]);
-
-        if (!passed)
-            return false;
-    }
 
     // Stop timer
     struct timeval toc;

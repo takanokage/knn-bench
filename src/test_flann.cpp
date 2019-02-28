@@ -46,8 +46,9 @@ double test_flann(
     struct timeval tic;
     gettimeofday(&tic, NULL);
 
-    int k = flann_index.knnSearch(flann_query, flann_indices, flann_distances,
-                                  K, SearchParams(-1, 0.0));
+    for (int i = 0; i < nb_iterations; i++)
+        int k = flann_index.knnSearch(flann_query, flann_indices, flann_distances,
+                                    K, SearchParams(-1, 0.0));
 
     // Stop timer
     struct timeval toc;
