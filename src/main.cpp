@@ -76,7 +76,8 @@ int main(int argc, char **argv)
     // Test and display results
     test_kNN_CUDA(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, 100, validation);
     test_flann(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, 100, validation);
-    test_faiss(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, 100, validation);
+    test_faiss_flat(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, 100, validation);
+    test_faiss_ivf(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, 100, validation);
     test_pqt(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, 100, validation);
 
     cout << endl;
