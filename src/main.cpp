@@ -14,6 +14,7 @@ using namespace std;
 
 #include "test_kNN_CUDA.h"
 #include "test_flann.h"
+#include "test_faiss.h"
 #include "test_pqt.h"
 
 // ----------------------------------------------------------------------------
@@ -75,6 +76,7 @@ int main(int argc, char **argv)
     // Test and display results
     test_kNN_CUDA(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, 100, validation);
     test_flann(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, 100, validation);
+    test_faiss(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, 100, validation);
     test_pqt(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, 100, validation);
 
     cout << endl;

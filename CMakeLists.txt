@@ -34,6 +34,12 @@ Directories(flann/src/cpp FLANN_INCLUDE_DIRS)
 add_subdirectory(pqt "${CMAKE_BINARY_DIR}/pqt")
 Directories(pqt PQT_INCLUDE_DIRS)
 
+# include faiss
+set(BUILD_TUTORIAL OFF CACHE BOOL "Build tutorials")
+set(BUILD_TEST OFF CACHE BOOL "Build tests")
+add_subdirectory(faiss "${CMAKE_BINARY_DIR}/faiss")
+# Directories(faiss FAISS_INCLUDE_DIRS)
+
 # collect the source code
 file(GLOB_RECURSE ALL_SOURCE_FILES "src/*.cpp")
 
@@ -52,7 +58,7 @@ include_directories(src
     /usr/local/cuda/include/
     /usr/local/cuda-10.0/samples/common/inc)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE kNN-CUDA pqt cublas lz4)
+target_link_libraries(${PROJECT_NAME} PRIVATE kNN-CUDA pqt gpufaiss cublas lz4)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     CUDA_SEPARABLE_COMPILATION ON
