@@ -8,12 +8,14 @@ using namespace std;
 
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
-void DisplayHeader()
+void DisplayHeader(const bool& validation)
 {
     cout << setw(REPORT_WIDTH) << "Implementation";
     cout << setw(REPORT_WIDTH) << "Duration (s)";
     cout << setw(REPORT_WIDTH) << "Nr. iterations";
-    cout << setw(REPORT_WIDTH) << "Index accuracy";
+
+    if (validation)
+        cout << setw(REPORT_WIDTH) << "Index accuracy";
 
     // only works for exact kNN implementations
     // cout << setw(REPORT_WIDTH) << "Precision accuracy";
@@ -29,7 +31,8 @@ void DisplayRow(
     const double& elapsed_time,
     const int& nb_iterations,
     const double& distance_acc,
-    const double& index_accuracy)
+    const double& index_accuracy,
+    const bool& validation)
 {
     // percentage of correct values required
     const float min_accuracy = 0.999f;
@@ -40,7 +43,9 @@ void DisplayRow(
     cout << setw(REPORT_WIDTH) << name;
     cout << setw(REPORT_WIDTH) << right << elapsed_time / nb_iterations;
     cout << setw(REPORT_WIDTH) << right << nb_iterations;
-    cout << setw(REPORT_WIDTH) << right << index_accuracy;
+
+    if (validation)
+        cout << setw(REPORT_WIDTH) << right << index_accuracy;
 
     // only works for exact kNN implementations
     // cout << setw(REPORT_WIDTH) << right << distance_acc;

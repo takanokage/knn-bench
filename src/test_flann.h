@@ -11,4 +11,5 @@ double test_flann(
     const std::vector<float>& gt_distances,
     const std::vector<int>& gt_indices,
     const char* const name,
-    const int& nb_iterations);
+    const int& nb_iterations,
+    const bool& validation = true);

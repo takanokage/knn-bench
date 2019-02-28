@@ -1,4 +1,6 @@
 
+#include <cstring>
+
 #include <iomanip>
 #include <iostream>
 #include <vector>
@@ -24,14 +26,18 @@ int main(int argc, char **argv)
     int testSize  = 8;
     int DIM       = 3;
     int K         = 4;
+    bool validation = true;
 
     // basic arguments readout
-    if (argc == 5)
+    if (5 <= argc)
     {
         trainSize = atoi(argv[1]);
         testSize = atoi(argv[2]);
         DIM = atoi(argv[3]);
         K = atoi(argv[4]);
+
+        if (6 <= argc)
+            validation = 0 != strcmp("-v", argv[5]);
     }
 
     if (trainSize < K)
@@ -60,24 +66,14 @@ int main(int argc, char **argv)
     init(&testPoints[0], testSize * DIM, 0.0f, 10.0f);
 
     // Compute the ground truth
-    Ref_kNN(trainPoints, testPoints, DIM, K, gt_distances, gt_indices);
+    if (validation)
+        Ref_kNN(trainPoints, testPoints, DIM, K, gt_distances, gt_indices);
 
-    // for some reason kNN-CUDA works with DIM & K as leading dimensions
-    // rows: DIM & K
-    // cols: trainSize & testSize
-    vector<float> trainPointsTr = Transpose(trainPoints, trainSize, DIM);
-    vector<float> testPointsTr = Transpose(testPoints, testSize, DIM);
-    vector<float> gt_distancesTr = Transpose(gt_distances, testSize, K);
-    vector<int> gt_indicesTr = Transpose(gt_indices, testSize, K);
-
-    DisplayHeader();
+    DisplayHeader(validation);
 
     // Test and display results
-    test_kNN_CUDA(trainPointsTr, testPointsTr, DIM, K, gt_distancesTr, gt_indicesTr, &knn_cuda_global,  "knn_cuda_global",  100);
-    test_kNN_CUDA(trainPointsTr, testPointsTr, DIM, K, gt_distancesTr, gt_indicesTr, &knn_cuda_texture, "knn_cuda_texture", 100);
-    test_kNN_CUDA(trainPointsTr, testPointsTr, DIM, K, gt_distancesTr, gt_indicesTr, &knn_cublas,       "knn_cublas",       100);
-
-    test_flann(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, "flann", 100);
+    test_kNN_CUDA(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, 100, validation);
+    test_flann(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, "flann", 100, validation);
 
     cout << endl;
 

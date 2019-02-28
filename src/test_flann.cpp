@@ -23,7 +23,8 @@ double test_flann(
     const std::vector<float>& gt_distances,
     const std::vector<int>& gt_indices,
     const char* const name,
-    const int& nb_iterations)
+    const int& nb_iterations,
+    const bool& validation)
 {
     int trainSize = (int)trainPoints.size() / DIM;
     int testSize = (int)testPoints.size() / DIM;
@@ -66,7 +67,8 @@ double test_flann(
         elapsed_time,
         nb_iterations,
         distance_acc,
-        index_accuracy);
+        index_accuracy,
+        validation);
 
     return elapsed_time;
 }
