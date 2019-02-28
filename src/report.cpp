@@ -28,7 +28,7 @@ void DisplayRow(
     const char* const name,
     const double& elapsed_time,
     const int& nb_iterations,
-    const double& precision_accuracy,
+    const double& distance_acc,
     const double& index_accuracy)
 {
     // percentage of correct values required
@@ -43,8 +43,8 @@ void DisplayRow(
     cout << setw(REPORT_WIDTH) << right << index_accuracy;
 
     // only works for exact kNN implementations
-    // cout << setw(REPORT_WIDTH) << right << precision_accuracy;
-    // if (precision_accuracy >= min_accuracy && index_accuracy >= min_accuracy )
+    // cout << setw(REPORT_WIDTH) << right << distance_acc;
+    // if (distance_acc >= min_accuracy && index_accuracy >= min_accuracy )
     //     cout << setw(REPORT_WIDTH) << "PASSED";
     // else
     //     cout << setw(REPORT_WIDTH) << "FAILED";

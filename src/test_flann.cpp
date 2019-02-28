@@ -5,6 +5,7 @@
 #include "report.h"
 
 #include <flann/flann.h>
+using namespace flann;
 
 #include <sys/time.h>
 
@@ -31,27 +32,22 @@ double test_flann(
     vector<float> test_distances(testSize * K);
     vector<int> test_indices(testSize * K);
 
-	float* dataset = (float*)&trainPoints[0];
-	float* testset = (float*)&testPoints[0];
+    Matrix<float> trainSet((float*)trainPoints.data(), trainSize, DIM);
 
-	int* result = (int*)&test_indices[0];
-	float* dists = (float*)&test_distances[0];
+    KDTreeSingleIndexParams params(15);
+    Index<L2<float>> flann_index(trainSet, params);
+    flann_index.buildIndex();
 
-	struct FLANNParameters p = DEFAULT_FLANN_PARAMETERS;
-    p.algorithm = FLANN_INDEX_KDTREE;
-    p.trees = 16;
-    p.log_level = FLANN_LOG_INFO;
-	p.checks = 64;
-
-	float speedup;
-	flann_index_t index_id = flann_build_index(dataset, trainSize, DIM, &speedup, &p);
+    Matrix<float> flann_query((float*)testPoints.data(), testSize, DIM);
+    Matrix<int> flann_indices(test_indices.data(), flann_query.rows, K);
+    Matrix<float> flann_distances(test_distances.data(), flann_query.rows, K);
 
     // Start timer
     struct timeval tic;
     gettimeofday(&tic, NULL);
 
-    for (int i = 0; i < nb_iterations; i++)
-        flann_find_nearest_neighbors_index(index_id, testset, testSize, result, dists, K, &p);
+    int k = flann_index.knnSearch(flann_query, flann_indices, flann_distances,
+                                  K, SearchParams(-1, 0.0));
 
     // Stop timer
     struct timeval toc;
@@ -61,16 +57,14 @@ double test_flann(
     double elapsed_time = toc.tv_sec - tic.tv_sec;
     elapsed_time += (toc.tv_usec - tic.tv_usec) / 1e6;
 
-    flann_free_index(index_id, &p);
-
     // Compute accuracy
-    float precision_accuracy = ComputeAccuracy(gt_distances, test_distances, K);
-    float index_accuracy     = ComputeAccuracy(gt_indices, test_indices, K);
+    float distance_acc = ComputeAccuracy(gt_distances, test_distances, K);
+    float index_accuracy = ComputeAccuracy(gt_indices, test_indices, K);
 
     DisplayRow(name,
         elapsed_time,
         nb_iterations,
-        precision_accuracy,
+        distance_acc,
         index_accuracy);
 
     return elapsed_time;

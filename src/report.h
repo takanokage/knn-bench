@@ -12,5 +12,5 @@ void DisplayRow(
     const char* const name,
     const double& elapsed_time,
     const int& nb_iterations,
-    const double& precision_accuracy,
+    const double& distance_acc,
     const double& index_accuracy);

@@ -29,7 +29,6 @@ Directories(flann/src/cpp FLANN_INCLUDE_DIRS)
 
 # collect the source code
 file(GLOB_RECURSE ALL_SOURCE_FILES "src/*.cpp")
-list(APPEND ALL_SOURCE_FILES flann/src/cpp/flann/flann.cpp)
 
 # message(STATUS "******")
 # message(STATUS "ALL_SOURCE_FILES : ${ALL_SOURCE_FILES}")

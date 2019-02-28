@@ -61,13 +61,13 @@ double test_kNN_CUDA(
     elapsed_time += (toc.tv_usec - tic.tv_usec) / 1e6;
 
     // Compute accuracy
-    float precision_accuracy = ComputeAccuracy(gt_distances, test_distances, K);
+    float distance_acc = ComputeAccuracy(gt_distances, test_distances, K);
     float index_accuracy     = ComputeAccuracy(gt_indices, test_indices, K);
 
     DisplayRow(name,
         elapsed_time,
         nb_iterations,
-        precision_accuracy,
+        distance_acc,
         index_accuracy);
 
     return elapsed_time;
