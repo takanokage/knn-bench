@@ -14,11 +14,9 @@
 #include "PerturbationProTree.hh"
 using namespace pqt;
 
+#include "performance.h"
 #include "ref.h"
 #include "report.h"
-
-#include <sys/stat.h>
-#include <sys/time.h>
 
 #include <algorithm>
 #include <iomanip>
@@ -32,7 +30,6 @@ double test_pqt(
     const int& K,
     const std::vector<float>& gt_distances,
     const std::vector<int>& gt_indices,
-    const char* const name,
     const int& nb_iterations,
     const bool& validation)
 {
@@ -70,7 +67,13 @@ double test_pqt(
 	vector<float> dVec(QN * N);
     float *d =  dVec.data();
 
-	ppt.calcDist(Distd, Md, Qd, N, QN, DIM, 1);
+    Performance::Start();
+
+    for (int i = 0; i < nb_iterations; i++)
+        ppt.calcDist(Distd, Md, Qd, N, QN, DIM, 1);
+
+    Performance::Stop();
+    double elapsed_time = Performance::Duration() / nb_iterations;
 
     /*/// v0 - runtime error, possibly fixable in CMakeLists.txt
     // terminate called after throwing an instance of 'thrust::system::system_error'
@@ -90,4 +93,17 @@ double test_pqt(
 	cudaFree(Md);
 	cudaFree(Distd);
 	cudaFree(Qd);
+
+    // Compute accuracy
+    float distance_acc = -1.0f;
+    float index_accuracy = -1.0f;
+
+    DisplayRow("pqt",
+        elapsed_time,
+        nb_iterations,
+        distance_acc,
+        index_accuracy,
+        validation);
+
+    return elapsed_time;
 }

@@ -1,13 +1,12 @@
 
 #include "test_flann.h"
 
+#include "performance.h"
 #include "ref.h"
 #include "report.h"
 
 #include <flann/flann.h>
 using namespace flann;
-
-#include <sys/time.h>
 
 #include <iomanip>
 #include <iostream>
@@ -22,7 +21,6 @@ double test_flann(
     const int& K,
     const std::vector<float>& gt_distances,
     const std::vector<int>& gt_indices,
-    const char* const name,
     const int& nb_iterations,
     const bool& validation)
 {
@@ -43,27 +41,20 @@ double test_flann(
     Matrix<int> flann_indices(test_indices.data(), flann_query.rows, K);
     Matrix<float> flann_distances(test_distances.data(), flann_query.rows, K);
 
-    // Start timer
-    struct timeval tic;
-    gettimeofday(&tic, NULL);
+    Performance::Start();
 
     for (int i = 0; i < nb_iterations; i++)
         int k = flann_index.knnSearch(flann_query, flann_indices, flann_distances,
                                     K, SearchParams(-1, 0.0));
 
-    // Stop timer
-    struct timeval toc;
-    gettimeofday(&toc, NULL);
-
-    // Elapsed time in ms
-    double elapsed_time = toc.tv_sec - tic.tv_sec;
-    elapsed_time += (toc.tv_usec - tic.tv_usec) / 1e6;
+    Performance::Stop();
+    double elapsed_time = Performance::Duration() / nb_iterations;
 
     // Compute accuracy
     float distance_acc = ComputeAccuracy(gt_distances, test_distances, K);
     float index_accuracy = ComputeAccuracy(gt_indices, test_indices, K);
 
-    DisplayRow(name,
+    DisplayRow("flann",
         elapsed_time,
         nb_iterations,
         distance_acc,

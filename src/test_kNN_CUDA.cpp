@@ -1,11 +1,11 @@
 
 #include "test_kNN_CUDA.h"
 
+#include "performance.h"
 #include "ref.h"
 #include "report.h"
 
 #include <cmath>
-#include <sys/time.h>
 
 #include <iomanip>
 #include <iostream>
@@ -71,9 +71,7 @@ double test(
     vector<float> test_distances(testSize * K);
     vector<int> test_indices(testSize * K);
 
-    // Start timer
-    struct timeval tic;
-    gettimeofday(&tic, NULL);
+    Performance::Start();
 
     // Compute K-NN several times
     for (int i = 0; i < nb_iterations; i++)
@@ -86,17 +84,12 @@ double test(
             &test_distances[0],
             &test_indices[0]);
 
-    // Stop timer
-    struct timeval toc;
-    gettimeofday(&toc, NULL);
-
-    // Elapsed time in ms
-    double elapsed_time = toc.tv_sec - tic.tv_sec;
-    elapsed_time += (toc.tv_usec - tic.tv_usec) / 1e6;
+    Performance::Stop();
+    double elapsed_time = Performance::Duration() / nb_iterations;
 
     // Compute accuracy
-    float distance_acc = ComputeAccuracy(gt_distances, test_distances, K);
-    float index_accuracy     = ComputeAccuracy(gt_indices, test_indices, K);
+    float distance_acc   = ComputeAccuracy(gt_distances, test_distances, K);
+    float index_accuracy = ComputeAccuracy(gt_indices, test_indices, K);
 
     DisplayRow(name,
         elapsed_time,

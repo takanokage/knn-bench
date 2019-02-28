@@ -74,8 +74,8 @@ int main(int argc, char **argv)
 
     // Test and display results
     test_kNN_CUDA(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, 100, validation);
-    test_flann(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, "flann", 100, validation);
-    test_pqt(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, "pqt", 100, validation);
+    test_flann(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, 100, validation);
+    test_pqt(trainPoints, testPoints, DIM, K, gt_distances, gt_indices, 100, validation);
 
     cout << endl;
 

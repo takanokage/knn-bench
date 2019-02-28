@@ -3,7 +3,7 @@
 
 #include <cstdlib>
 
-#define REPORT_PRECISION 5
+#define REPORT_PRECISION 3
 #define REPORT_WIDTH     16
 
 void DisplayHeader(const bool& validation = false);

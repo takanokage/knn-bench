@@ -11,7 +11,7 @@ using namespace std;
 void DisplayHeader(const bool& validation)
 {
     cout << setw(REPORT_WIDTH) << "Implementation";
-    cout << setw(REPORT_WIDTH) << "Duration (s)";
+    cout << setw(REPORT_WIDTH) << "Duration (ms)";
     cout << setw(REPORT_WIDTH) << "Nr. iterations";
 
     if (validation)
