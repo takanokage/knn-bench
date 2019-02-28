@@ -22,10 +22,16 @@ endfunction()
 # help debug this CMakeLists.txt
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 
+# include kNN-CUDA
 add_subdirectory(kNN-CUDA "${CMAKE_BINARY_DIR}/kNN-CUDA")
 set(KNN_CUDA_INCLUDE_DIRS kNN-CUDA)
 
+# include flann
+# add_subdirectory(flann "${CMAKE_BINARY_DIR}/flann")
 Directories(flann/src/cpp FLANN_INCLUDE_DIRS)
+
+# include PQT
+add_subdirectory(pqt "${CMAKE_BINARY_DIR}/pqt")
 
 # collect the source code
 file(GLOB_RECURSE ALL_SOURCE_FILES "src/*.cpp")
