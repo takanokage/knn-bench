@@ -59,7 +59,12 @@ include_directories(src
     /usr/local/cuda/include/
     /usr/local/cuda-10.0/samples/common/inc)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE kNN-CUDA pqt gpufaiss cublas lz4)
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    kNN-CUDA
+    pqt
+    gpufaiss
+    faiss
+    cublas lz4)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     CUDA_SEPARABLE_COMPILATION ON
