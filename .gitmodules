@@ -4,9 +4,6 @@
 [submodule "flann"]
 	path = flann
 	url = https://github.com/mariusmuja/flann
-[submodule "pqt"]
-	path = pqt
-	url = https://github.com/cgtuebingen/Product-Quantization-Tree
 [submodule "faiss"]
 	path = faiss
 	url = https://github.com/facebookresearch/faiss
