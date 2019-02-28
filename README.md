@@ -16,5 +16,8 @@ The tests will run with the following arguments:
 - Testing points  : 64
 - Dimension       : 3
 - K               : 32
+- no validation   : -v
+
+Currently the validation is done using a custom, exact, cpu implementation which is slow. Use `-v` to disable the validation when it takes too long.
 
 These arguments can be changed in `run.sh`.
